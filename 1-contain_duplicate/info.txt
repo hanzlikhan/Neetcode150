@@ -1,0 +1,97 @@
+Nice pick! The **"Contains Duplicate"** problem is a classic beginner LeetCode question, great for understanding problem-solving approaches.
+
+---
+
+### 🔍 Problem Recap:
+You’re given a list of integers, and you need to check:
+- If **any number appears more than once**, return `True`.
+- If **all numbers are unique**, return `False`.
+
+---
+
+### ✅ Input/Output
+```python
+Input:  nums = [1, 2, 3, 3]
+Output: True
+
+Input:  nums = [1, 2, 3, 4]
+Output: False
+```
+
+---
+
+## ✅ APPROACHES TO SOLVE THIS
+
+### ✅ 1. **Brute Force** (Beginner-friendly but not efficient)
+
+**Idea:** Compare every element with every other element.
+
+```python
+def containsDuplicate(nums):
+    for i in range(len(nums)):
+        for j in range(i + 1, len(nums)):
+            if nums[i] == nums[j]:
+                return True
+    return False
+```
+
+**Time Complexity:** O(n²)  
+**Space Complexity:** O(1)  
+✅ Easy to write, but slow for large arrays.
+
+---
+
+### ✅ 2. **Using a Set (Optimal and Pythonic)**
+
+**Idea:** Use a `set` to track seen numbers. If you see a number again, return `True`.
+
+```python
+def containsDuplicate(nums):
+    seen = set()
+    for num in nums:
+        if num in seen:
+            return True
+        seen.add(num)
+    return False
+```
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(n)  
+✅ Efficient and clean. This is the most common real-world solution.
+
+---
+
+### ✅ 3. **Using Sorting**
+
+**Idea:** Sort the array. If there are duplicates, they will be next to each other.
+
+```python
+def containsDuplicate(nums):
+    nums.sort()
+    for i in range(1, len(nums)):
+        if nums[i] == nums[i - 1]:
+            return True
+    return False
+```
+
+**Time Complexity:** O(n log n)  
+**Space Complexity:** O(1) or O(n) depending on the sort  
+✅ Works fine, but not as fast as the set method.
+
+---
+
+### 🧠 TL;DR Which to Use?
+
+| Approach       | Time      | Space     | When to use |
+|----------------|-----------|-----------|--------------|
+| Brute Force    | O(n²)     | O(1)      | For learning, not practice |
+| Set            | O(n)      | O(n)      | ✅ Best overall |
+| Sorting        | O(n log n)| O(1)      | If space is tight |
+
+---
+
+Now, let me know:
+- Do you want to start implementing one of these from scratch?
+- Or do you want me to explain how sets work, or how to code part of this?
+
+I'm here to walk through it all with you.
