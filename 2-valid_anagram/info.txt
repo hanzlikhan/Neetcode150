@@ -1,0 +1,151 @@
+## ✅ Problem: Valid Anagram
+
+> **Goal:** Return `True` if both strings contain the same characters with the same frequency, else `False`.
+
+---
+
+## 🔍 Step-by-Step Approaches:
+
+---
+
+### ### ✅ Approach 1: **Sorting Method**
+
+#### 🔧 How It Works:
+- Anagrams are just **rearranged letters**.
+- If you **sort** both strings, they should look **exactly the same**.
+
+#### 🧠 Logic:
+- `"racecar"` → `['a', 'c', 'c', 'e', 'r', 'r', 'a']`
+- `"carrace"` → `['a', 'a', 'c', 'c', 'e', 'r', 'r']`
+
+Oops — you caught that! These two actually become the **same** when sorted.
+
+#### ✅ Steps:
+1. Check if lengths are equal.
+2. Sort both strings.
+3. Compare the sorted strings.
+
+#### 🧾 Code:
+```python
+def is_anagram_sorting(s: str, t: str) -> bool:
+    if len(s) != len(t):
+        return False
+    return sorted(s) == sorted(t)
+```
+
+#### ⏱ Time Complexity:
+- Sorting takes **O(n log n)**
+- Space: **O(n)** for sorting output
+
+---
+
+### ✅ Approach 2: **HashMap / Frequency Count**
+
+#### 🔧 How It Works:
+- Count how many times each character appears in both strings.
+- If the counts are the same → it's an anagram.
+
+#### ✅ Steps:
+1. Check if lengths are equal.
+2. Create a dictionary `count_s` for string `s`.
+3. Do the same for string `t`.
+4. Compare both dictionaries.
+
+#### 🧾 Code:
+```python
+def is_anagram_dict(s: str, t: str) -> bool:
+    if len(s) != len(t):
+        return False
+
+    count_s = {}
+    count_t = {}
+
+    for ch in s:
+        count_s[ch] = count_s.get(ch, 0) + 1
+
+    for ch in t:
+        count_t[ch] = count_t.get(ch, 0) + 1
+
+    return count_s == count_t
+```
+
+#### ⏱ Time Complexity:
+- Time: **O(n)** (looping once over each string)
+- Space: **O(1)** for fixed 26 lowercase letters
+
+---
+
+### ✅ Approach 3: **Pythonic Way with `collections.Counter`**
+
+#### 🔧 How It Works:
+- `Counter` is a built-in class that counts character frequencies.
+- Just use `Counter(s) == Counter(t)`.
+
+#### ✅ Steps:
+1. Use `Counter` on both strings.
+2. Compare the resulting frequency maps.
+
+#### 🧾 Code:
+```python
+from collections import Counter
+
+def is_anagram_counter(s: str, t: str) -> bool:
+    return Counter(s) == Counter(t)
+```
+
+#### ⏱ Time Complexity:
+- Time: **O(n)**
+- Space: **O(n)** (Counter stores char frequencies)
+
+---
+
+### ✅ BONUS: Using One HashMap Only (Optimized)
+
+> Reduce space by using a **single hash map**, increment for `s` and decrement for `t`. At the end, all values should be zero.
+
+#### 🧾 Code:
+```python
+def is_anagram_single_map(s: str, t: str) -> bool:
+    if len(s) != len(t):
+        return False
+
+    count = {}
+
+    for i in range(len(s)):
+        count[s[i]] = count.get(s[i], 0) + 1
+        count[t[i]] = count.get(t[i], 0) - 1
+
+    for val in count.values():
+        if val != 0:
+            return False
+
+    return True
+```
+
+---
+
+## 🔬 Example Test Case
+
+```python
+s = "racecar"
+t = "carrace"
+
+print(is_anagram_sorting(s, t))       # ✅ True
+print(is_anagram_dict(s, t))          # ✅ True
+print(is_anagram_counter(s, t))       # ✅ True
+print(is_anagram_single_map(s, t))    # ✅ True
+
+print(is_anagram_sorting("jar", "jam"))  # ❌ False
+```
+
+---
+
+## ✅ Summary of Approaches
+
+| Approach              | Time       | Space      | Best For            |
+|----------------------|------------|------------|---------------------|
+| Sorting               | O(n log n) | O(n)       | Simple logic        |
+| Dict Counting         | O(n)       | O(n)       | Manual frequency    |
+| `collections.Counter` | O(n)       | O(n)       | Pythonic & clean    |
+| Single Map            | O(n)       | O(n)       | Space-efficient     |
+
