@@ -1,0 +1,134 @@
+### 🔍 **Problem Recap**
+You're given:
+- An array `nums`
+- A number `target`
+
+Find **two indices** `i` and `j` such that:
+- `nums[i] + nums[j] == target`
+- `i ≠ j`
+- Return the indices with **smaller index first**
+
+---
+
+### ✅ **Approaches to Solve**
+
+#### ✅ 1. Brute Force (Nested Loops)
+
+**Idea:**
+- Try every pair of elements.
+- Check if they add up to the target.
+
+**Time:** `O(n^2)`  
+**Space:** `O(1)`
+
+```python
+def two_sum_brute(nums, target):
+    for i in range(len(nums)):
+        for j in range(i + 1, len(nums)):
+            if nums[i] + nums[j] == target:
+                return [i, j]
+```
+
+---
+
+#### ✅ 2. HashMap (Efficient)
+
+**Idea:**
+- Use a HashMap to store numbers we've seen so far.
+- For every element `x`, check if `target - x` is already in the map.
+
+**Time:** `O(n)`  
+**Space:** `O(n)`
+
+```python
+def two_sum_hashmap(nums, target):
+    seen = {}  # stores value: index
+    for i, num in enumerate(nums):
+        complement = target - num
+        if complement in seen:
+            return [seen[complement], i]
+        seen[num] = i
+```
+
+---
+
+### ✅ Examples
+
+```python
+print(two_sum_hashmap([3, 4, 5, 6], 7))   # ➞ [0, 1]
+print(two_sum_hashmap([4, 5, 6], 10))     # ➞ [0, 2]
+print(two_sum_hashmap([5, 5], 10))        # ➞ [0, 1]
+```
+
+---
+
+### ✅ Java Version
+
+Let’s write both the brute-force and optimized versions in Java:
+
+---
+
+#### 🔹 **Brute Force (Java)**
+```java
+public class TwoSum {
+    public static int[] twoSumBrute(int[] nums, int target) {
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                if (nums[i] + nums[j] == target) {
+                    return new int[]{i, j};
+                }
+            }
+        }
+        return null; // shouldn't reach here if one valid answer is guaranteed
+    }
+}
+```
+
+---
+
+#### 🔹 **Using HashMap (Java - Optimal)**
+```java
+import java.util.HashMap;
+
+public class TwoSum {
+    public static int[] twoSumHashMap(int[] nums, int target) {
+        HashMap<Integer, Integer> map = new HashMap<>(); // value -> index
+
+        for (int i = 0; i < nums.length; i++) {
+            int complement = target - nums[i];
+
+            if (map.containsKey(complement)) {
+                return new int[]{map.get(complement), i};
+            }
+
+            map.put(nums[i], i);
+        }
+
+        return null;
+    }
+}
+```
+
+---
+
+### ✅ How to Use
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        int[] nums = {3, 4, 5, 6};
+        int target = 7;
+        int[] result = TwoSum.twoSumHashMap(nums, target);
+        System.out.println("Result: [" + result[0] + ", " + result[1] + "]");
+    }
+}
+```
+
+---
+
+### ✅ Summary Table
+
+| Approach     | Time      | Space     | When to Use       |
+|--------------|-----------|-----------|-------------------|
+| Brute Force  | O(n²)     | O(1)      | Learning/Small Input |
+| HashMap      | O(n)      | O(n)      | Best for interviews |
