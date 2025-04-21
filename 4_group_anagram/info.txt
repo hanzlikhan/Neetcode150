@@ -1,0 +1,122 @@
+### 🧩 What is an Anagram?
+
+An **anagram** is when two words have **exactly the same letters**, just maybe in a different **order**.
+
+Like:
+- `"act"` and `"cat"` → both have: `a`, `c`, `t`
+- `"stop"`, `"pots"`, and `"tops"` → all have: `s`, `t`, `o`, `p`
+
+So we group all words that have the same **bag of letters**!
+
+---
+
+### 🎯 What is the problem asking?
+
+We are given a list of words like this:
+
+```python
+["act", "pots", "tops", "cat", "stop", "hat"]
+```
+
+And we need to **group** the anagrams together:
+
+```python
+[
+  ["act", "cat"],
+  ["pots", "tops", "stop"],
+  ["hat"]
+]
+```
+
+---
+
+### 🧠 How do we solve it? Let’s think like this:
+
+#### 👶 Step-by-step Simple Plan:
+
+1. **Go through each word** in the list.
+2. For each word, **sort its letters** (just like alphabetizing).
+   - `"act"` → `"act"`  
+   - `"cat"` → `"act"`  
+   - `"stop"` → `"opst"`  
+   - `"pots"` → `"opst"`  
+3. Use this **sorted version** as a **label** (key).
+4. Put all words with the same label together into a list!
+
+Like:
+```python
+{
+  "act": ["act", "cat"],
+  "opst": ["stop", "pots", "tops"],
+  "aht": ["hat"]
+}
+```
+
+5. At the end, we just return all those lists.
+
+---
+
+### 🔧 What tool helps with that?
+
+A **dictionary** (or hashmap)! Why?
+
+Because we can store something like:
+
+```python
+{
+  "sorted_word": [original_words]
+}
+```
+
+---
+
+### ✅ Full Python Code
+
+```python
+from typing import List
+from collections import defaultdict
+
+def groupAnagrams(strs: List[str]) -> List[List[str]]:
+    anagram_map = defaultdict(list)  # default value is an empty list
+
+    for word in strs:
+        # Sort the word to find its "signature"
+        sorted_word = ''.join(sorted(word))
+        # Group the word using the sorted form
+        anagram_map[sorted_word].append(word)
+
+    # Return only the grouped values
+    return list(anagram_map.values())
+
+# Example
+print(groupAnagrams(["act", "pots", "tops", "cat", "stop", "hat"]))
+```
+
+---
+
+### 💡 Output:
+
+```python
+[['act', 'cat'], ['pots', 'tops', 'stop'], ['hat']]
+```
+
+> Note: The order of groups may be different (because dictionaries don't guarantee order), but the grouped words will be correct.
+
+---
+
+### 🕒 Time and Space Complexity
+
+- **Time Complexity:** O(N * K log K)  
+  - N = number of words  
+  - K = average length of each word  
+  - We sort each word → that's `K log K`
+
+- **Space Complexity:** O(N * K)  
+  - We store every word in a group
+
+---
+
+### 💬 In summary:
+We just sort each word → that becomes our **group tag**.  
+If other words have the same tag → they go in the same basket.  
+At the end, return all baskets.
