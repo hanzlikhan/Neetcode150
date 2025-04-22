@@ -1,0 +1,139 @@
+## ✅ Problem Statement
+
+> Given an integer array `nums` and an integer `k`, return the `k` most frequent elements.
+
+---
+
+## ✨ Example
+
+**Input:**  
+```python
+nums = [1,2,2,3,3,3]
+k = 2
+```
+
+**Output:**  
+```python
+[3, 2]
+```
+
+---
+
+## 🧠 Approach 1: Using Dictionary + `heapq.nlargest`
+
+### 🔹 Idea:
+
+1. Count how many times each element appears using a dictionary.
+2. Use `heapq.nlargest()` to get the top `k` frequent elements.
+3. Efficient and readable.
+
+### 🧾 Code:
+
+```python
+from typing import List
+import heapq
+
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        count = {}
+        for num in nums:
+            count[num] = count.get(num, 0) + 1
+        
+        # Get k keys with highest frequency
+        return heapq.nlargest(k, count.keys(), key=count.get)
+```
+
+---
+
+## 🧠 Approach 2: Dictionary + Manual Sorting (No `heapq`)
+
+### 🔹 Idea:
+
+1. Same as before: count the frequency using a dictionary.
+2. Convert to list of tuples.
+3. Sort manually by frequency.
+4. Return top `k` items.
+
+### 🧾 Code:
+
+```python
+from typing import List
+
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        freq = {}
+        for num in nums:
+            if num in freq:
+                freq[num] += 1
+            else:
+                freq[num] = 1
+        
+        # Convert to list of tuples (num, freq)
+        freq_list = list(freq.items())
+        
+        # Sort by frequency in descending order
+        freq_list.sort(key=lambda x: x[1], reverse=True)
+        
+        # Extract top k elements
+        return [freq_list[i][0] for i in range(k)]
+```
+
+---
+
+## 🧠 Approach 3: Dictionary + Bucket Sort (Optimized for frequency)
+
+### 🔹 Idea:
+
+1. Count frequencies like before.
+2. Use an array (`bucket`) where index = frequency, and each bucket contains numbers with that frequency.
+3. Iterate from the end of the bucket to get top `k`.
+
+### 🧾 Code:
+
+```python
+from typing import List
+
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        freq = {}
+        for num in nums:
+            freq[num] = freq.get(num, 0) + 1
+
+        # Create buckets where index = frequency
+        bucket = [[] for _ in range(len(nums) + 1)]
+        for num, count in freq.items():
+            bucket[count].append(num)
+
+        result = []
+        for i in range(len(bucket) - 1, 0, -1):
+            for num in bucket[i]:
+                result.append(num)
+                if len(result) == k:
+                    return result
+```
+
+---
+
+## 📌 Summary Table
+
+| Approach                         | Time Complexity | Space Complexity | Notes                          |
+|----------------------------------|------------------|------------------|--------------------------------|
+| Dictionary + `heapq.nlargest`   | O(n log k)       | O(n)             | Clean and Pythonic             |
+| Dictionary + Manual Sort        | O(n log n)       | O(n)             | Simple and easy to follow      |
+| Dictionary + Bucket Sort        | O(n)             | O(n)             | Most efficient in some cases   |
+
+---
+
+## 🔍 What is `lambda`?
+
+A `lambda` function is a small anonymous function.
+
+In this line:
+
+```python
+freq_list.sort(key=lambda x: x[1], reverse=True)
+```
+
+It means:
+> "Sort the list based on the second item (`x[1]`, the frequency) in **descending** order."
+
