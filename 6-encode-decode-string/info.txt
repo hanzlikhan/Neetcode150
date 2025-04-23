@@ -1,0 +1,184 @@
+## 💡 Problem Statement (Recap)
+
+You're given a list of strings like this:
+
+```python
+["neet", "code", "love", "you"]
+```
+
+You need to:
+
+1. **Encode** it into one single string (so you can save/transmit it).
+2. **Decode** it back into the original list.
+
+---
+
+## ✅ Approach: Length + Delimiter (`length#word`)
+
+### 📌 Why use this method?
+
+- Simple and **safe** even if the word has special characters.
+- Very **efficient**: no extra libraries, linear time.
+- You know where each word ends based on its **length**.
+
+---
+
+## 🧠 Encoding Logic (Step-by-Step)
+
+For each word:
+- Get its length: `"neet"` → `4`
+- Add a separator like `#`
+- Append the word: `4#neet`
+
+Repeat for all words and combine:
+```
+4#neet4#code4#love3#you
+```
+
+This is our **encoded string**.
+
+---
+
+## 🔁 Decoding Logic (Step-by-Step)
+
+Now we decode this string back:
+
+- Start reading characters until `#` → that part is the **length**
+- After `#`, take `length` characters as the word
+- Repeat until the end
+
+---
+
+## 🐍 Python Code + Explanation
+
+```python
+from typing import List
+
+class Codec:
+    # Encodes a list of strings to a single string
+    def encode(self, strs: List[str]) -> str:
+        encoded = ''
+        for s in strs:
+            encoded += str(len(s)) + '#' + s
+        return encoded
+
+    # Decodes a single string to a list of strings
+    def decode(self, s: str) -> List[str]:
+        res = []
+        i = 0
+
+        while i < len(s):
+            j = i
+            # Move j until we find the #
+            while s[j] != '#':
+                j += 1
+
+            # Get the length prefix
+            length = int(s[i:j])
+            # Move past the #
+            j += 1
+            # Extract the word using the length
+            word = s[j:j+length]
+            res.append(word)
+
+            # Move i to the next encoded word
+            i = j + length
+
+        return res
+```
+
+### ✅ Example usage in Python
+
+```python
+codec = Codec()
+encoded = codec.encode(["neet", "code", "love", "you"])
+print("Encoded:", encoded)
+decoded = codec.decode(encoded)
+print("Decoded:", decoded)
+```
+
+### 🔄 Output:
+
+```
+Encoded: 4#neet4#code4#love3#you
+Decoded: ['neet', 'code', 'love', 'you']
+```
+
+---
+
+## ☕ Java Version (Clean and Efficient)
+
+```java
+import java.util.*;
+
+public class Codec {
+
+    // Encode a list of strings to a single string
+    public String encode(List<String> strs) {
+        StringBuilder encoded = new StringBuilder();
+        for (String str : strs) {
+            encoded.append(str.length()).append("#").append(str);
+        }
+        return encoded.toString();
+    }
+
+    // Decode the encoded string back to list of strings
+    public List<String> decode(String s) {
+        List<String> decoded = new ArrayList<>();
+        int i = 0;
+
+        while (i < s.length()) {
+            int j = i;
+            // Find the delimiter #
+            while (s.charAt(j) != '#') {
+                j++;
+            }
+
+            int length = Integer.parseInt(s.substring(i, j));
+            j++; // Skip '#'
+            String word = s.substring(j, j + length);
+            decoded.add(word);
+
+            i = j + length; // Move to the next word
+        }
+
+        return decoded;
+    }
+}
+```
+
+### ✅ Example usage in Java
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        Codec codec = new Codec();
+        List<String> input = Arrays.asList("neet", "code", "love", "you");
+
+        String encoded = codec.encode(input);
+        System.out.println("Encoded: " + encoded);
+
+        List<String> decoded = codec.decode(encoded);
+        System.out.println("Decoded: " + decoded);
+    }
+}
+```
+
+### 🔄 Output:
+
+```
+Encoded: 4#neet4#code4#love3#you
+Decoded: [neet, code, love, you]
+```
+
+---
+
+## ✅ Why This Approach Works So Well
+
+| Feature       | Description                                                                 |
+|---------------|-----------------------------------------------------------------------------|
+| **Fast**      | Only one pass through the string (O(n) time).                              |
+| **Safe**      | Works even with symbols like `#`, because we rely on length prefix.         |
+| **Simple**    | Easy to implement in Python or Java.                                        |
+| **Compact**   | Uses just one delimiter `#`, no extra libraries.                            |
+
