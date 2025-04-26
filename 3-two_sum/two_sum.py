@@ -6,7 +6,7 @@
 #                 return [i,j]
             
 
-# By using hashmap and checking values like  target - arr[i] and check that answer from the hashmap
+# By using hashmap and checking values like  target - arr[i] and check  hashmap
 
 def two_sum(self, arr, target):
     seen = {}
