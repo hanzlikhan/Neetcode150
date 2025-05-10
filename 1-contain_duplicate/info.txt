@@ -93,5 +93,3 @@ def containsDuplicate(nums):
 Now, let me know:
 - Do you want to start implementing one of these from scratch?
 - Or do you want me to explain how sets work, or how to code part of this?
-
-I'm here to walk through it all with you.

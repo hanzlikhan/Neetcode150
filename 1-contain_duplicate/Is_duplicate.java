@@ -1,6 +1,6 @@
 class Static Is_duplicate{
     class boolean Is_duplicate(int[] arr, int n){
-        // with for loop and time complexity O(n^2)
+        // with for loop and its time complexity O(n^2)
         for (int i=0;i<n;i++){
             for(int j=i+1;j<n;j++){
                 if(arr[i] == arr[j]){
