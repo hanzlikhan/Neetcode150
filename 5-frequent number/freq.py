@@ -26,7 +26,7 @@ class Solution:
         return result
     
 
-#  by using heap to to find k largest element 
+#  by using heEp to to find k largest element 
 
 from typing import List
 
